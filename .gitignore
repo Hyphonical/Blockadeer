@@ -22,8 +22,3 @@ target
 
 # Miscallaneous files
 .other
-
-# Next.js
-crates/frontend/.next
-crates/frontend/out
-crates/frontend/node_modules 
