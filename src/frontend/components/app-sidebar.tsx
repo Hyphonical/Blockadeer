@@ -10,6 +10,7 @@ import {
   Home,
   List,
   Monitor,
+  Palette,
   Settings,
   Shield,
   Clock,
@@ -28,6 +29,29 @@ import {
   SidebarMenuItem,
   SidebarSeparator,
 } from "@/components/ui/sidebar"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { useSidebar } from "@/components/ui/sidebar"
+import { useTheme } from "next-themes"
+import { cn } from "@/lib/utils"
+import { useEffect, useState } from "react"
+
+const themes = [
+  { value: "light", label: "Light" },
+  { value: "dark", label: "Dark" },
+  { value: "nord", label: "Nord" },
+  { value: "catppuccin", label: "Catppuccin" },
+  { value: "dracula", label: "Dracula" },
+  { value: "sepia", label: "Sepia" },
+  { value: "tokyonight", label: "Tokyonight" },
+  { value: "gruvbox", label: "Gruvbox" },
+] as const
 
 const mainNavItems = [
   {
@@ -85,6 +109,15 @@ const systemNavItems = [
 
 export function AppSidebar() {
   const pathname = usePathname()
+  const { state: sidebarState } = useSidebar()
+  const { theme = "monochrome", setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const isExpanded = sidebarState === "expanded"
 
   return (
     <Sidebar collapsible="icon">
@@ -158,7 +191,33 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4">
+      <SidebarFooter className={cn("p-4", !isExpanded && "group-data-[collapsible=icon]:p-2")}>
+        {isExpanded && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex w-full items-center gap-3 rounded-md px-2 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
+                <Palette className="size-4" />
+                <span className="flex-1 text-left">Theme</span>
+                <span className="text-xs text-muted-foreground">
+                  {mounted ? themes.find(t => t.value === theme)?.label : "..."}
+                </span>
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent side="top" className="w-48">
+              <DropdownMenuLabel>Select Theme</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {themes.map((t) => (
+                <DropdownMenuItem
+                  key={t.value}
+                  onClick={() => setTheme(t.value)}
+                  className={cn(theme === t.value && "bg-accent")}
+                >
+                  {t.label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
         <div className="flex items-center gap-2 text-xs text-muted-foreground group-data-[collapsible=icon]:hidden">
           <div className="size-2 rounded-full bg-foreground animate-pulse" />
           <span>System Online</span>
