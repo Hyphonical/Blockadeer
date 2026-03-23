@@ -1,4 +1,4 @@
-# Blockadeer 🐋
+# Blockadeer 🛡️
 
 **Single-binary DNS ad and tracker blocker. No logs. No cloud. No config headaches.**
 
