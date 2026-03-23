@@ -1,0 +1,36 @@
+[package]
+name         = "blockadeer-backend"
+version      = "0.1.0"
+edition      = "2024"
+rust-version = "1.88.0"
+
+[[bin]]
+name = "blockadeer"
+path = "src/main.rs"
+
+[dependencies]
+# Shared types
+blockadeer-shared = { path = "../shared" }
+
+# Async runtime
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "time", "signal", "sync"] }
+
+# HTTP server
+axum = { version = "0.8", features = ["http1", "http2", "ws", "tokio"] }
+tower = { version = "0.5", features = ["util"] }
+tower-http = { version = "0.6", features = ["cors", "compression-gzip"] }
+
+# Static file embedding
+rust-embed = { version = "8" }
+mime_guess = { version = "2" }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1" }
+
+# Logging
+tracing = { version = "0.1", features = ["log"] }
+tracing-subscriber = { version = "0.3", features = ["fmt", "env-filter", "ansi"] }
+
+# Error handling
+anyhow = { version = "1", features = ["std"] }

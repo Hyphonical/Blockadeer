@@ -1,0 +1,7 @@
+1:"$Sreact.fragment"
+2:I[54254,["/_next/static/chunks/0.32.gwx5v948.js","/_next/static/chunks/0b5_iiimbhiw-.js","/_next/static/chunks/0h36lre5rfd11.js","/_next/static/chunks/0is1-oneqjc-8.js","/_next/static/chunks/09aqevio61dsl.js"],"DashboardHeader"]
+3:I[32139,["/_next/static/chunks/0.32.gwx5v948.js","/_next/static/chunks/0b5_iiimbhiw-.js","/_next/static/chunks/0h36lre5rfd11.js","/_next/static/chunks/0is1-oneqjc-8.js","/_next/static/chunks/09aqevio61dsl.js"],"DevicesTable"]
+4:I[72628,["/_next/static/chunks/0.32.gwx5v948.js","/_next/static/chunks/0b5_iiimbhiw-.js","/_next/static/chunks/0h36lre5rfd11.js"],"OutletBoundary"]
+5:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[[["$","$L2",null,{"title":"Devices"}],["$","main",null,{"className":"flex-1 overflow-auto p-6 flex flex-col min-h-0","children":["$","div",null,{"className":"mx-auto max-w-7xl w-full flex-1 flex flex-col space-y-6","children":["$","$L3",null,{}]}]}]],[["$","script","script-0",{"src":"/_next/static/chunks/0is1-oneqjc-8.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/09aqevio61dsl.js","async":true}]],["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"-WCJQ9BhtGqZArYaLUNF7"}
+6:null
