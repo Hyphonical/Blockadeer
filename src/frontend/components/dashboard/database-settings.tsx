@@ -1,6 +1,7 @@
 "use client"
 
-import { Database, HardDrive, Archive, Download, Upload, Trash2, RefreshCw } from "lucide-react"
+import { useState } from "react"
+import { Database, HardDrive, Archive, Download, Upload, Trash2, RefreshCw, Check } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -9,6 +10,44 @@ import { Progress } from "@/components/ui/progress"
 import { Switch } from "@/components/ui/switch"
 
 export function DatabaseSettings() {
+  const [autoPruneEnabled, setAutoPruneEnabled] = useState(true)
+  const [retentionSaved, setRetentionSaved] = useState(false)
+  const [dbExported, setDbExported] = useState(false)
+  const [dbImported, setDbImported] = useState(false)
+  const [walFlushed, setWalFlushed] = useState(false)
+  const [vacuumed, setVacuumed] = useState(false)
+  const [purged, setPurged] = useState(false)
+
+  const saveRetention = () => {
+    setRetentionSaved(true)
+    setTimeout(() => setRetentionSaved(false), 2000)
+  }
+
+  const exportDb = () => {
+    setDbExported(true)
+    setTimeout(() => setDbExported(false), 2000)
+  }
+
+  const importDb = () => {
+    setDbImported(true)
+    setTimeout(() => setDbImported(false), 2000)
+  }
+
+  const flushWal = () => {
+    setWalFlushed(true)
+    setTimeout(() => setWalFlushed(false), 2000)
+  }
+
+  const optimizeDb = () => {
+    setVacuumed(true)
+    setTimeout(() => setVacuumed(false), 2000)
+  }
+
+  const purgeLogs = () => {
+    setPurged(true)
+    setTimeout(() => setPurged(false), 2000)
+  }
+
   return (
     <div className="space-y-6">
       {/* Database Stats Overview */}
@@ -80,7 +119,7 @@ export function DatabaseSettings() {
             <div className="space-y-3">
               <Label>Query Log Retention (Days)</Label>
               <div className="flex items-center gap-3">
-                <Input type="number" defaultValue="30" className="w-24" />
+                <Input type="number" defaultValue="30" className="w-24 no-spinner" />
                 <span className="text-sm text-muted-foreground">Keep detailed query logs for 30 days</span>
               </div>
             </div>
@@ -88,7 +127,7 @@ export function DatabaseSettings() {
             <div className="space-y-3">
               <Label>Analytics Retention (Days)</Label>
               <div className="flex items-center gap-3">
-                <Input type="number" defaultValue="90" className="w-24" />
+                <Input type="number" defaultValue="90" className="w-24 no-spinner" />
                 <span className="text-sm text-muted-foreground">Keep aggregated statistics for 90 days</span>
               </div>
             </div>
@@ -98,11 +137,20 @@ export function DatabaseSettings() {
                 <div className="text-sm font-medium">Auto-Prune Background Job</div>
                 <div className="text-xs text-muted-foreground">Run daily cleanup at 02:00 AM</div>
               </div>
-              <Switch checked={true} />
+              <Switch checked={autoPruneEnabled} onCheckedChange={setAutoPruneEnabled} />
             </div>
           </CardContent>
           <CardFooter className="bg-muted/50 border-t px-6 py-3">
-            <Button variant="outline" size="sm">Save Retention Settings</Button>
+            <Button variant="outline" size="sm" onClick={saveRetention}>
+              {retentionSaved ? (
+                <>
+                  <Check className="mr-2 size-4" />
+                  Saved!
+                </>
+              ) : (
+                "Save Retention Settings"
+              )}
+            </Button>
           </CardFooter>
         </Card>
 
@@ -114,24 +162,24 @@ export function DatabaseSettings() {
               <CardDescription>Perform manual database operations</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button variant="outline" className="w-full justify-start">
+              <Button variant="outline" className="w-full justify-start" onClick={flushWal}>
                 <RefreshCw className="mr-2 size-4 text-muted-foreground" />
                 <div className="flex flex-col items-start text-left">
-                  <span>Flush WAL (Checkpoint)</span>
+                  <span>{walFlushed ? "WAL Flushed!" : "Flush WAL (Checkpoint)"}</span>
                   <span className="text-xs font-normal text-muted-foreground">Moves WAL data into main database file</span>
                 </div>
               </Button>
-              <Button variant="outline" className="w-full justify-start">
+              <Button variant="outline" className="w-full justify-start" onClick={optimizeDb}>
                 <Database className="mr-2 size-4 text-muted-foreground" />
                 <div className="flex flex-col items-start text-left">
-                  <span>Optimize Database (Vacuum)</span>
+                  <span>{vacuumed ? "Database Optimized!" : "Optimize Database (Vacuum)"}</span>
                   <span className="text-xs font-normal text-muted-foreground">Reclaims unallocated space and defragments</span>
                 </div>
               </Button>
-              <Button variant="outline" className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10 border-destructive/20">
+              <Button variant="outline" className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10 border-destructive/20" onClick={purgeLogs}>
                 <Trash2 className="mr-2 size-4" />
                 <div className="flex flex-col items-start text-left">
-                  <span>Purge All Query Logs</span>
+                  <span>{purged ? "Query Logs Purged!" : "Purge All Query Logs"}</span>
                   <span className="text-xs font-normal opacity-80">Irreversibly deletes all stored query histories</span>
                 </div>
               </Button>
@@ -144,13 +192,13 @@ export function DatabaseSettings() {
               <CardTitle>Backup & Restore</CardTitle>
             </CardHeader>
             <CardContent className="flex gap-3">
-              <Button className="flex-1">
-                <Download className="mr-2 size-4" />
-                Export DB
+              <Button className="flex-1" onClick={exportDb}>
+              <Download className="mr-2 size-4" />
+                {dbExported ? "Exported!" : "Export DB"}
               </Button>
-              <Button variant="outline" className="flex-1">
+              <Button variant="outline" className="flex-1" onClick={importDb}>
                 <Upload className="mr-2 size-4" />
-                Import DB
+                {dbImported ? "Imported!" : "Import DB"}
               </Button>
             </CardContent>
           </Card>

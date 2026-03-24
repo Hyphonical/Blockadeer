@@ -23,7 +23,7 @@ const chartData = [
 const chartConfig = {
   count: {
     label: "Blocked",
-    color: "oklch(0.75 0 0)",
+    color: "var(--chart-color)",
   },
 } satisfies ChartConfig
 
@@ -43,7 +43,7 @@ export function TopBlockedChart() {
           >
             <XAxis
               type="number"
-              stroke="oklch(0.5 0 0)"
+              stroke="var(--muted-foreground)"
               fontSize={11}
               tickLine={false}
               axisLine={false}
@@ -52,7 +52,7 @@ export function TopBlockedChart() {
             <YAxis
               type="category"
               dataKey="domain"
-              stroke="oklch(0.5 0 0)"
+              stroke="var(--muted-foreground)"
               fontSize={11}
               tickLine={false}
               axisLine={false}
@@ -62,8 +62,9 @@ export function TopBlockedChart() {
             <ChartTooltip content={<ChartTooltipContent />} />
             <Bar
               dataKey="count"
-              fill="oklch(0.65 0 0)"
+              fill="var(--chart-color)"
               radius={[0, 4, 4, 0]}
+              strokeWidth={0}
             />
           </BarChart>
         </ChartContainer>

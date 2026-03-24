@@ -39,7 +39,7 @@ const chartData = [
 const chartConfig = {
   queries: {
     label: "Queries",
-    color: "oklch(0.85 0 0)",
+    color: "var(--chart-color)",
   },
 } satisfies ChartConfig
 
@@ -56,17 +56,17 @@ export function HourlyDistributionChart() {
             data={chartData}
             margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
           >
-            <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.25 0 0)" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
             <XAxis
               dataKey="hour"
-              stroke="oklch(0.5 0 0)"
+              stroke="var(--muted-foreground)"
               fontSize={11}
               tickLine={false}
               axisLine={false}
               tickFormatter={(value) => `${value}h`}
             />
             <YAxis
-              stroke="oklch(0.5 0 0)"
+              stroke="var(--muted-foreground)"
               fontSize={11}
               tickLine={false}
               axisLine={false}
@@ -75,8 +75,9 @@ export function HourlyDistributionChart() {
             <ChartTooltip content={<ChartTooltipContent />} />
             <Bar
               dataKey="queries"
-              fill="oklch(0.65 0 0)"
+              fill="var(--chart-color)"
               radius={[4, 4, 0, 0]}
+              strokeWidth={0}
             />
           </BarChart>
         </ChartContainer>

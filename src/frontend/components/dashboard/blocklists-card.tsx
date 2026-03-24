@@ -1,6 +1,8 @@
 "use client"
 
 import { RefreshCw, Check } from "lucide-react"
+import { useDashboardWS } from "@/hooks/use-dashboard-ws"
+import { cn } from "@/lib/utils"
 
 function formatNumber(n: number): string {
   return n.toLocaleString("en-US")
@@ -9,30 +11,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress"
 import { Button } from "@/components/ui/button"
 
-const blocklists = [
-  {
-    name: "StevenBlack",
-    domains: 142532,
-    lastUpdated: "2 hours ago",
-    enabled: true,
-  },
-  {
-    name: "OISD-Full",
-    domains: 892341,
-    lastUpdated: "2 hours ago",
-    enabled: true,
-  },
-  {
-    name: "Hagezi-Normal",
-    domains: 234892,
-    lastUpdated: "2 hours ago",
-    enabled: true,
-  },
-]
-
-const totalDomains = blocklists.reduce((acc, list) => acc + list.domains, 0)
-
 export function BlocklistsCard() {
+  const { blocklists } = useDashboardWS("blocklists")
+
+  const totalDomains = blocklists.reduce((acc, list) => acc + list.domains, 0)
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -42,9 +25,9 @@ export function BlocklistsCard() {
             {formatNumber(totalDomains)} domains across {blocklists.length} lists
           </CardDescription>
         </div>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" disabled>
           <RefreshCw className="mr-2 size-3" />
-          Refresh
+          Live
         </Button>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -60,7 +43,7 @@ export function BlocklistsCard() {
               </span>
             </div>
             <Progress 
-              value={(list.domains / totalDomains) * 100} 
+              value={totalDomains > 0 ? (list.domains / totalDomains) * 100 : 0}
               className="h-1.5"
             />
             <p className="text-xs text-muted-foreground">

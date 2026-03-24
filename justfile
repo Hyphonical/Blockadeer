@@ -13,6 +13,10 @@ build:
     cd src/frontend && bun install && bun run build && cd ../..
     cargo build --release
 
+build-dev:
+    cd src/frontend && bun install && bun run build && cd ../..
+    cargo build
+
 # Build only the frontend
 build-frontend:
     cd src/frontend && bun install && bun run build

@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { Plus, Pencil, Trash2, GripVertical, Server, Shield, Activity } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -14,7 +15,17 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-const upstreamServers = [
+interface UpstreamServer {
+  id: string
+  name: string
+  address: string
+  protocol: "DoH" | "DoT" | "UDP"
+  status: "Active" | "Fallback"
+  latency: string
+  enabled: boolean
+}
+
+const defaultServers: UpstreamServer[] = [
   {
     id: "1",
     name: "Cloudflare",
@@ -45,6 +56,37 @@ const upstreamServers = [
 ]
 
 export function UpstreamDnsSettings() {
+  const [servers, setServers] = useState(defaultServers)
+  const [dnssecEnabled, setDnssecEnabled] = useState(true)
+  const [ecsEnabled, setEcsEnabled] = useState(false)
+  const [cacheEnabled, setCacheEnabled] = useState(true)
+  const [strictOrder, setStrictOrder] = useState(true)
+
+  const toggleServer = (id: string) => {
+    setServers((prev) =>
+      prev.map((server) =>
+        server.id === id ? { ...server, enabled: !server.enabled } : server
+      )
+    )
+  }
+
+  const deleteServer = (id: string) => {
+    setServers((prev) => prev.filter((s) => s.id !== id))
+  }
+
+  const addServer = () => {
+    const newServer: UpstreamServer = {
+      id: String(Date.now()),
+      name: "New Resolver",
+      address: "https://new-resolver.example.com/dns-query",
+      protocol: "DoH",
+      status: "Fallback",
+      latency: "0ms",
+      enabled: true,
+    }
+    setServers((prev) => [newServer, ...prev])
+  }
+
   return (
     <div className="space-y-6">
       <Card>
@@ -53,7 +95,7 @@ export function UpstreamDnsSettings() {
             <CardTitle>Upstream Servers</CardTitle>
             <CardDescription>Configure external DNS resolvers and their priority</CardDescription>
           </div>
-          <Button size="sm">
+          <Button size="sm" onClick={addServer}>
             <Plus className="mr-2 size-3" />
             Add Resolver
           </Button>
@@ -71,13 +113,13 @@ export function UpstreamDnsSettings() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {upstreamServers.map((server, index) => (
+              {servers.map((server, index) => (
                 <TableRow key={server.id} className={!server.enabled ? "opacity-60" : ""}>
                   <TableCell>
                     <GripVertical className="size-4 text-muted-foreground cursor-move hover:text-foreground" />
                   </TableCell>
                   <TableCell>
-                    <Switch checked={server.enabled} aria-label="Toggle resolver" />
+                    <Switch checked={server.enabled} onCheckedChange={() => toggleServer(server.id)} aria-label="Toggle resolver" />
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-col">
@@ -98,16 +140,25 @@ export function UpstreamDnsSettings() {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <Button variant="ghost" size="icon" className="size-8 text-muted-foreground">
+                      <Button variant="ghost" size="icon" className="size-8 text-muted-foreground" onClick={() => {
+                        setServers((prev) => prev.map((s) => s.id === server.id ? { ...s, name: s.name + "*" } : s))
+                      }}>
                         <Pencil className="size-4" />
                       </Button>
-                      <Button variant="ghost" size="icon" className="size-8 text-muted-foreground hover:text-destructive">
+                      <Button variant="ghost" size="icon" className="size-8 text-muted-foreground hover:text-destructive" onClick={() => deleteServer(server.id)}>
                         <Trash2 className="size-4" />
                       </Button>
                     </div>
                   </TableCell>
                 </TableRow>
               ))}
+              {servers.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center text-muted-foreground h-24">
+                    No upstream servers configured
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </CardContent>
@@ -133,7 +184,7 @@ export function UpstreamDnsSettings() {
                 <div className="text-sm font-medium">Strict Order (Sequential)</div>
                 <div className="text-xs text-muted-foreground">Try primary first, fallback on timeout</div>
               </div>
-              <Switch checked={true} />
+              <Switch checked={strictOrder} onCheckedChange={setStrictOrder} />
             </div>
             <div className="flex items-center justify-between rounded-lg border p-4 opacity-50">
               <div className="space-y-0.5">
@@ -159,21 +210,21 @@ export function UpstreamDnsSettings() {
                 <div className="text-sm font-medium">Enable DNSSEC Validation</div>
                 <div className="text-xs text-muted-foreground">Verify cryptographic signatures</div>
               </div>
-              <Switch checked={true} />
+              <Switch checked={dnssecEnabled} onCheckedChange={setDnssecEnabled} />
             </div>
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <div className="text-sm font-medium">EDNS Client Subnet (ECS)</div>
                 <div className="text-xs text-muted-foreground">Forward client prefix for routing</div>
               </div>
-              <Switch checked={false} />
+              <Switch checked={ecsEnabled} onCheckedChange={setEcsEnabled} />
             </div>
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <div className="text-sm font-medium">Use Local Cache</div>
                 <div className="text-xs text-muted-foreground">Cache upstream responses to memory</div>
               </div>
-              <Switch checked={true} />
+              <Switch checked={cacheEnabled} onCheckedChange={setCacheEnabled} />
             </div>
           </CardContent>
         </Card>

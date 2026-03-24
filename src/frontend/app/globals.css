@@ -6,6 +6,7 @@
 /* Blockadeer Theme System
  * Supports: Dark (default), Light, Nord, Catppuccin, Dracula, Sepia, Tokyonight, Gruvbox
  * Use data-theme attribute on <html> to switch themes
+ * Chart colors: ONE color per theme for all graphs
  */
 
 /* ============================================
@@ -33,11 +34,6 @@
   --border: oklch(0.25 0 0);
   --input: oklch(0.22 0 0);
   --ring: oklch(0.5 0 0);
-  --chart-1: oklch(0.95 0 0);
-  --chart-2: oklch(0.75 0 0);
-  --chart-3: oklch(0.55 0 0);
-  --chart-4: oklch(0.40 0 0);
-  --chart-5: oklch(0.30 0 0);
   --radius: 0.5rem;
   --sidebar: oklch(0.08 0 0);
   --sidebar-foreground: oklch(0.95 0 0);
@@ -51,6 +47,7 @@
   --success-foreground: oklch(0.98 0 0);
   --warning: oklch(0.80 0.16 85);
   --warning-foreground: oklch(0.20 0 0);
+  --chart-color: oklch(0.7 0 0);
 }
 
 /* ============================================
@@ -76,11 +73,6 @@
   --border: oklch(0.88 0 0);
   --input: oklch(0.90 0 0);
   --ring: oklch(0.50 0 0);
-  --chart-1: oklch(0.20 0 0);
-  --chart-2: oklch(0.40 0 0);
-  --chart-3: oklch(0.60 0 0);
-  --chart-4: oklch(0.75 0 0);
-  --chart-5: oklch(0.85 0 0);
   --radius: 0.5rem;
   --sidebar: oklch(0.95 0 0);
   --sidebar-foreground: oklch(0.11 0 0);
@@ -94,6 +86,7 @@
   --success-foreground: oklch(0.98 0 0);
   --warning: oklch(0.70 0.16 85);
   --warning-foreground: oklch(0.11 0 0);
+  --chart-color: oklch(0.35 0 0);
 }
 
 /* ============================================
@@ -119,11 +112,6 @@
   --border: #4c566a;
   --input: #4c566a;
   --ring: #88c0d0;
-  --chart-1: #88c0d0;
-  --chart-2: #81a1c1;
-  --chart-3: #5e81ac;
-  --chart-4: #a3be8c;
-  --chart-5: #b48ead;
   --radius: 0.5rem;
   --sidebar: #2e3440;
   --sidebar-foreground: #eceff4;
@@ -137,6 +125,7 @@
   --success-foreground: rgba(163, 190, 140, 0.15);
   --warning: #ebcb8b;
   --warning-foreground: #2e3440;
+  --chart-color: #81a1c1;
 }
 
 /* ============================================
@@ -162,11 +151,6 @@
   --border: #414865;
   --input: #414865;
   --ring: #89b4fa;
-  --chart-1: #89b4fa;
-  --chart-2: #cba6f7;
-  --chart-3: #f38ba8;
-  --chart-4: #a6e3a1;
-  --chart-5: #f9e2af;
   --radius: 0.5rem;
   --sidebar: #303446;
   --sidebar-foreground: #c6d0f5;
@@ -180,6 +164,7 @@
   --success-foreground: rgba(166, 227, 161, 0.15);
   --warning: #f9e2af;
   --warning-foreground: #303446;
+  --chart-color: #94e2d5;
 }
 
 /* ============================================
@@ -205,11 +190,6 @@
   --border: #44475a;
   --input: #44475a;
   --ring: #bd93f9;
-  --chart-1: #bd93f9;
-  --chart-2: #ff79c6;
-  --chart-3: #ffb86c;
-  --chart-4: #50fa7b;
-  --chart-5: #8be9fd;
   --radius: 0.5rem;
   --sidebar: #282a36;
   --sidebar-foreground: #f8f8f2;
@@ -223,6 +203,7 @@
   --success-foreground: rgba(80, 250, 123, 0.15);
   --warning: #f1fa8c;
   --warning-foreground: #282a36;
+  --chart-color: #50fa7b;
 }
 
 /* ============================================
@@ -248,11 +229,6 @@
   --border: #d4c5a9;
   --input: #d4c5a9;
   --ring: #8b5e3c;
-  --chart-1: #8b5e3c;
-  --chart-2: #a0522d;
-  --chart-3: #8b7355;
-  --chart-4: #6b8e23;
-  --chart-5: #b8860b;
   --radius: 0.5rem;
   --sidebar: #f4ecd8;
   --sidebar-foreground: #5b4636;
@@ -266,6 +242,7 @@
   --success-foreground: rgba(107, 142, 35, 0.15);
   --warning: #b8860b;
   --warning-foreground: #5b4636;
+  --chart-color: #a0522d;
 }
 
 /* ============================================
@@ -291,11 +268,6 @@
   --border: #3b4261;
   --input: #3b4261;
   --ring: #7aa2f7;
-  --chart-1: #7aa2f7;
-  --chart-2: #bb9af7;
-  --chart-3: #7dcfff;
-  --chart-4: #9ece6a;
-  --chart-5: #e0af68;
   --radius: 0.5rem;
   --sidebar: #1a1b26;
   --sidebar-foreground: #c0caf5;
@@ -309,6 +281,7 @@
   --success-foreground: rgba(158, 206, 106, 0.15);
   --warning: #e0af68;
   --warning-foreground: #1a1b26;
+  --chart-color: #7aa2f7;
 }
 
 /* ============================================
@@ -334,11 +307,6 @@
   --border: #504945;
   --input: #504945;
   --ring: #d65c0b;
-  --chart-1: #d65c0b;
-  --chart-2: #fe8019;
-  --chart-3: #fabd2f;
-  --chart-4: #b8bb26;
-  --chart-5: #83a598;
   --radius: 0.5rem;
   --sidebar: #282828;
   --sidebar-foreground: #ebdbb2;
@@ -352,8 +320,10 @@
   --success-foreground: rgba(184, 187, 38, 0.15);
   --warning: #fabd2f;
   --warning-foreground: #282828;
+  --chart-color: #b8bb26;
 }
 
+/* ==== Shared Base Styles ==== */
 @theme inline {
   --font-sans: 'Geist', 'Geist Fallback';
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
@@ -399,6 +369,7 @@
   --color-warning-foreground: var(--warning-foreground);
 }
 
+/* ==== Tailwind Base ==== */
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -406,4 +377,15 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Hide number input spinners for all themes */
+input[type="number"].no-spinner {
+  -moz-appearance: textfield;
+}
+
+input[type="number"].no-spinner::-webkit-outer-spin-button,
+input[type="number"].no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

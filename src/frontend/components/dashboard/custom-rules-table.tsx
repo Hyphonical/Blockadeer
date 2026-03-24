@@ -12,8 +12,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { useState } from "react"
 
-const customRules = [
+interface CustomRule {
+  domain: string
+  type: "Exact" | "Wildcard"
+  action: "blocked" | "allowed"
+  createdAt: string
+}
+
+const defaultRules: CustomRule[] = [
   {
     domain: "ads.example.com",
     type: "Exact",
@@ -35,6 +43,22 @@ const customRules = [
 ]
 
 export function CustomRulesTable() {
+  const [rules, setRules] = useState<CustomRule[]>(defaultRules)
+
+  const deleteRule = (domain: string) => {
+    setRules((prev) => prev.filter((r) => r.domain !== domain))
+  }
+
+  const addRule = () => {
+    const newRule: CustomRule = {
+      domain: "new-rule.example.com",
+      type: "Exact",
+      action: "blocked",
+      createdAt: "Just now",
+    }
+    setRules((prev) => [newRule, ...prev])
+  }
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -42,7 +66,7 @@ export function CustomRulesTable() {
           <CardTitle>Custom Rules</CardTitle>
           <CardDescription>Locally enforced DNS overrides matching domains or wildcards</CardDescription>
         </div>
-        <Button size="sm">
+        <Button size="sm" onClick={addRule}>
           <Plus className="mr-2 size-3" />
           Add Rule
         </Button>
@@ -59,7 +83,7 @@ export function CustomRulesTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {customRules.map((rule) => (
+            {rules.map((rule) => (
               <TableRow key={rule.domain}>
                 <TableCell className="font-mono text-sm">
                   {rule.domain}
@@ -78,13 +102,18 @@ export function CustomRulesTable() {
                   {rule.createdAt}
                 </TableCell>
                 <TableCell className="text-right">
-                  <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                    onClick={() => deleteRule(rule.domain)}
+                  >
                     <Trash2 className="size-4" />
                   </Button>
                 </TableCell>
               </TableRow>
             ))}
-            {customRules.length === 0 && (
+            {rules.length === 0 && (
               <TableRow>
                 <TableCell colSpan={5} className="text-center text-muted-foreground h-24">
                   No custom rules defined

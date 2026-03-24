@@ -27,11 +27,11 @@ const chartData = [
 const chartConfig = {
   allowed: {
     label: "Allowed",
-    color: "oklch(0.95 0 0)",
+    color: "var(--chart-color)",
   },
   blocked: {
     label: "Blocked",
-    color: "oklch(0.55 0 0)",
+    color: "var(--chart-color)",
   },
 } satisfies ChartConfig
 
@@ -48,16 +48,16 @@ export function QueriesChart() {
             data={chartData}
             margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
           >
-            <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.25 0 0)" />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
             <XAxis
               dataKey="time"
-              stroke="oklch(0.5 0 0)"
+              stroke="var(--muted-foreground)"
               fontSize={12}
               tickLine={false}
               axisLine={false}
             />
             <YAxis
-              stroke="oklch(0.5 0 0)"
+              stroke="var(--muted-foreground)"
               fontSize={12}
               tickLine={false}
               axisLine={false}
@@ -68,16 +68,18 @@ export function QueriesChart() {
               type="monotone"
               dataKey="blocked"
               stackId="1"
-              stroke="oklch(0.55 0 0)"
-              fill="oklch(0.35 0 0)"
+              stroke="var(--chart-color)"
+              fill="var(--chart-color)"
+              fillOpacity={0.25}
               strokeWidth={2}
             />
             <Area
               type="monotone"
               dataKey="allowed"
               stackId="1"
-              stroke="oklch(0.95 0 0)"
-              fill="oklch(0.75 0 0 / 0.3)"
+              stroke="var(--chart-color)"
+              fill="var(--chart-color)"
+              fillOpacity={0.15}
               strokeWidth={2}
             />
           </AreaChart>

@@ -24,10 +24,22 @@ const nextConfig = {
     optimizePackageImports: [
       'lucide-react',      // Icon library – huge, only import needed icons
       'recharts',          // Charting library – only used components bundled
-      'react-day-picker',  // Calendar component – modular tree-shaking
-      'date-fns',          // Date utilities – import selectively (if used)
-      'zod',               // Validation library – only validators used bundled
     ],
+
+    // Enable Turbopack's filesystem cache during production builds for faster rebuilds.
+    turbopackFileSystemCacheForBuild: true,
+
+    // Enable tree-shaking in Turbopack to remove unused code and reduce bundle size.
+    // turbopackTreeShaking: true,
+
+    // Remove unused exports in Turbopack to further optimize the bundle size.
+    turbopackRemoveUnusedExports: true,
+
+    // Remove unused imports in Turbopack to clean up the code and reduce bundle size.
+    turbopackRemoveUnusedImports: true,
+
+    // Enable minification in Turbopack to reduce the size of the output bundles.
+    turbopackMinify: true,
   },
 };
 

@@ -34,3 +34,6 @@ tracing-subscriber = { version = "0.3", features = ["fmt", "env-filter", "ansi"]
 
 # Error handling
 anyhow = { version = "1", features = ["std"] }
+
+# Random number generation
+rand = { version = "0.8" }

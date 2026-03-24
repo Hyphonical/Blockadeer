@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { Clock, Plus, Pencil, Trash2 } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -14,7 +15,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-const schedules = [
+const defaultSchedules = [
   {
     id: "1",
     name: "Bedtime Restriction",
@@ -48,6 +49,34 @@ const schedules = [
 ]
 
 export function SchedulesTable() {
+  const [schedules, setSchedules] = useState(defaultSchedules)
+
+  const toggleSchedule = (id: string) => {
+    setSchedules((prev) =>
+      prev.map((schedule) =>
+        schedule.id === id ? { ...schedule, enabled: !schedule.enabled } : schedule
+      )
+    )
+  }
+
+  const deleteSchedule = (id: string) => {
+    setSchedules((prev) => prev.filter((s) => s.id !== id))
+  }
+
+  const addSchedule = () => {
+    const newSchedule = {
+      id: String(Date.now()),
+      name: "New Schedule",
+      target: "New Device",
+      ip: "192.168.1.100",
+      days: "Daily",
+      time: "00:00 - 23:59",
+      policy: "Block All",
+      enabled: true,
+    }
+    setSchedules((prev) => [newSchedule, ...prev])
+  }
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -55,7 +84,7 @@ export function SchedulesTable() {
           <CardTitle>Time-Based Schedules</CardTitle>
           <CardDescription>Automatically apply filtering policies based on time and day</CardDescription>
         </div>
-        <Button size="sm">
+        <Button size="sm" onClick={addSchedule}>
           <Plus className="mr-2 size-3" />
           Add Schedule
         </Button>
@@ -76,7 +105,7 @@ export function SchedulesTable() {
             {schedules.map((schedule) => (
               <TableRow key={schedule.id} className={!schedule.enabled ? "opacity-60" : ""}>
                 <TableCell>
-                  <Switch checked={schedule.enabled} aria-label="Toggle schedule" />
+                  <Switch checked={schedule.enabled} onCheckedChange={() => toggleSchedule(schedule.id)} aria-label="Toggle schedule" />
                 </TableCell>
                 <TableCell className="font-medium">
                   {schedule.name}
@@ -103,10 +132,12 @@ export function SchedulesTable() {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-2">
-                    <Button variant="ghost" size="icon" className="size-8 text-muted-foreground">
+                    <Button variant="ghost" size="icon" className="size-8 text-muted-foreground" onClick={() => {
+                      setSchedules((prev) => prev.map((s) => s.id === schedule.id ? { ...s, name: s.name + "*" } : s))
+                    }}>
                       <Pencil className="size-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="size-8 text-muted-foreground hover:text-destructive">
+                    <Button variant="ghost" size="icon" className="size-8 text-muted-foreground hover:text-destructive" onClick={() => deleteSchedule(schedule.id)}>
                       <Trash2 className="size-4" />
                     </Button>
                   </div>
